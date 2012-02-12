@@ -1,3 +1,4 @@
 anitracker.egg-info/
 *.swp
 *.pyc
+.DS_STORE

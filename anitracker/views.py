@@ -14,17 +14,18 @@ def index(request):
     form = forms.AdmissionForm()
 
     if request.method == 'POST':
+        post = request.POST.copy()
         animal = None
         specie = None
         released_to = None
         finder = None
         admission = models.Admission()
 
-        animal_form = forms.AnimalForm(request.POST, prefix='animal')
-        specie_form = forms.SpecieTypeForm(request.POST, prefix='specie')
-        released_person_form = forms.PersonForm(request.POST,
+        animal_form = forms.AnimalForm(post, prefix='animal')
+        specie_form = forms.SpecieTypeForm(post, prefix='specie')
+        released_person_form = forms.PersonForm(post,
             prefix='released')
-        finder_form = forms.PersonForm(request.POST, prefix='finder')
+        finder_form = forms.PersonForm(post, prefix='finder')
 
         if animal_form.is_valid():
             animal = animal_form.save()
@@ -42,8 +43,8 @@ def index(request):
             finder = finder_form.save()
             admission.received_from = finder
 
-        form = forms.AdmissionForm(request.POST, instance=admission)
-        import ipdb; ipdb.set_trace() ### XXX BREAKPOINT
+        admission.save()
+        form = forms.AdmissionForm(post, instance=admission)
         if form.is_valid():
             form.save()
             return redirect('index')
