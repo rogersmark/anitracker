@@ -81,6 +81,11 @@ class Admission(BaseModel):
         (CAPTIVITY, 'Still in Captivity')
     )
 
+    RELEASED_STATES = (
+        TRANSFERRED,
+        RELEASED
+    )
+
     NEONATE = 'neonate'
     JUVENILE = 'juvenile'
     ADULT = 'adult'
