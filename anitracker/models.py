@@ -74,10 +74,14 @@ class Admission(BaseModel):
     )
 
     date_of_admission = models.DateField()
-    received_from = models.ForeignKey('Person', related_name='received_person')
-    released_to = models.ForeignKey('Person')
+    received_from = models.ForeignKey('Person',
+        related_name='received_person',
+        null=True,
+        blank=True,
+    )
+    released_to = models.ForeignKey('Person', null=True, blank=True)
     animal = models.ForeignKey('Animal')
-    animal_subtype = models.ForeignKey('SpecieType')
+    animal_subtype = models.ForeignKey('SpecieType', null=True)
     animal_age = models.CharField(max_length=64, choices=ANIMAL_AGE_CHOICES)
     disposition = models.CharField(max_length=64,
         choices=DISPOSITION_CHOICES)

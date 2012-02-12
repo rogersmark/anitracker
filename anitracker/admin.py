@@ -11,3 +11,4 @@ class AnimalAdmin(admin.ModelAdmin):
 admin.site.register(models.Animal, AnimalAdmin)
 admin.site.register(models.Person)
 admin.site.register(models.Admission)
+admin.site.register(models.SpecieType)
