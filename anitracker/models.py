@@ -22,6 +22,19 @@ class Animal(BaseModel):
     def __unicode__(self):
         return '%s - %s' % (self.name, self.sub_type)
 
+class PersonManager(models.Manager):
+    ''' Manager for Person Class '''
+
+    @property
+    def finders(self):
+        return self.filter(
+            person_type=self.model.FINDER)
+
+    @property
+    def receivers(self):
+        return self.filter(
+            person_type=self.model.RECEIVER)
+
 class Person(BaseModel):
     ''' Person that dropped off, or received animal '''
 
@@ -45,6 +58,8 @@ class Person(BaseModel):
     email = models.EmailField(null=True)
     person_type = models.CharField(
         max_length=16, choices=PERSON_TYPES)
+
+    objects = PersonManager()
 
     def __unicode__(self):
         return u'%s %s - %s' % (self.first_name, self.last_name, self.zipcode)
