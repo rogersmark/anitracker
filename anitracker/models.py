@@ -13,35 +13,38 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
-class SpecieType(BaseModel):
-    ''' A model to track the sub-species of an animal '''
-
-    name = models.CharField(max_length=256)
-    animal = models.ForeignKey('Animal')
-
-    def __unicode__(self):
-        return u'%s' % self.name
-
 class Animal(BaseModel):
     ''' Animal that was brought into center '''
 
     name = models.CharField(max_length=256)
+    sub_type = models.CharField(max_length=256)
 
     def __unicode__(self):
-        return '%s' % self.name
+        return '%s - %s' % (self.name, self.sub_type)
 
 class Person(BaseModel):
     ''' Person that dropped off, or received animal '''
 
+    RECEIVER = 'receiver'
+    FINDER = 'finder'
+
+    PERSON_TYPES = (
+        (RECEIVER, 'Receiver'),
+        (FINDER, 'Finder')
+    )
+
     first_name = models.CharField(max_length=128)
     last_name = models.CharField(max_length=128)
     address = models.CharField(max_length=256)
-    address_two = models.CharField(max_length=256, null=True)
+    address_two = models.CharField(
+        max_length=256, null=True, blank=True)
     county = models.CharField(max_length=128)
     state = USStateField()
     telephone = PhoneNumberField()
     zipcode = models.CharField(max_length=10)
     email = models.EmailField(null=True)
+    person_type = models.CharField(
+        max_length=16, choices=PERSON_TYPES)
 
     def __unicode__(self):
         return u'%s %s - %s' % (self.first_name, self.last_name, self.zipcode)
@@ -81,7 +84,6 @@ class Admission(BaseModel):
     )
     released_to = models.ForeignKey('Person', null=True, blank=True)
     animal = models.ForeignKey('Animal')
-    animal_subtype = models.ForeignKey('SpecieType', null=True)
     animal_age = models.CharField(max_length=64, choices=ANIMAL_AGE_CHOICES)
     disposition = models.CharField(max_length=64,
         choices=DISPOSITION_CHOICES)
