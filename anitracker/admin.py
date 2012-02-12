@@ -2,7 +2,7 @@ from django.contrib import admin
 from django import forms
 from django.core.exceptions import ValidationError
 
-from anitracker import models
+from anitracker import models, utils
 
 
 class AnimalAdmin(admin.ModelAdmin):
@@ -49,6 +49,7 @@ class AdmissionAdminForm(forms.ModelForm):
 
 class AdmissionAdmin(admin.ModelAdmin):
     form = AdmissionAdminForm
+    actions = (utils.export_to_csv, utils.export_to_xlsx)
     fieldsets = (
         (None, {
             'fields': ('date_of_admission', 'received_from')
