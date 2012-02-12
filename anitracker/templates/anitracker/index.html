@@ -1,0 +1,9 @@
+{% extends 'anitracker/base.html' %}
+{% block title %} - Admissions {% endblock %}
+{% block content %}
+    {{ animal_form.as_p }}
+    <br /><br />
+    {{ specie_form.as_p }}
+    <br /><br />
+    {{ admission_form.as_p }}
+{% endblock %}
