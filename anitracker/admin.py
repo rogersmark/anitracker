@@ -15,7 +15,8 @@ class PersonAdmin(admin.ModelAdmin):
             'fields': ('first_name', 'last_name', 'person_type')
         }),
         ('Address', {
-            'fields': ('address', 'address_two', 'county', 'state', 'zipcode')
+            'fields': ('address', 'address_two', 'city',
+                'county', 'state', 'zipcode')
         }),
         ('Contact Information', {
             'fields': ('email', 'telephone')
@@ -24,6 +25,7 @@ class PersonAdmin(admin.ModelAdmin):
     list_display = (
         'last_name',
         'first_name',
+        'city',
         'county',
         'zipcode',
         'state',
@@ -72,9 +74,11 @@ class AdmissionAdmin(admin.ModelAdmin):
     list_display = ('date_of_admission', 'animal', 'disposition', 'follow_up')
     search_fields = (
         'received_from__last_name',
+        'received_from__city',
         'received_from__county',
         'received_from__zipcode',
         'released_to__last_name',
+        'released_to__city',
         'released_to__county',
         'released_to__zipcode',
         'animal__name',

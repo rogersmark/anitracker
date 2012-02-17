@@ -38,11 +38,11 @@ class PersonManager(models.Manager):
 class Person(BaseModel):
     ''' Person that dropped off, or received animal '''
 
-    RECEIVER = 'receiver'
+    RECEIVER = 'rehabber'
     FINDER = 'finder'
 
     PERSON_TYPES = (
-        (RECEIVER, 'Receiver'),
+        (RECEIVER, 'Rehabber'),
         (FINDER, 'Finder')
     )
 
@@ -51,11 +51,12 @@ class Person(BaseModel):
     address = models.CharField(max_length=256)
     address_two = models.CharField(
         max_length=256, null=True, blank=True)
+    city = models.CharField(max_length=128)
     county = models.CharField(max_length=128)
     state = USStateField()
     telephone = PhoneNumberField()
     zipcode = models.CharField(max_length=10)
-    email = models.EmailField(null=True)
+    email = models.EmailField(blank=True, null=True)
     person_type = models.CharField(
         max_length=16, choices=PERSON_TYPES)
 
