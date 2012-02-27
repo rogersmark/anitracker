@@ -46,8 +46,18 @@ class Person(BaseModel):
         (FINDER, 'Finder')
     )
 
-    first_name = models.CharField(max_length=128)
-    last_name = models.CharField(max_length=128)
+    organization = models.CharField(max_length=256,
+        blank=True,
+        null=True
+    )
+    first_name = models.CharField(max_length=128,
+        blank=True,
+        null=True
+    )
+    last_name = models.CharField(max_length=128,
+        blank=True,
+        null=True
+    )
     address = models.CharField(max_length=256)
     address_two = models.CharField(
         max_length=256, null=True, blank=True)
