@@ -12,7 +12,7 @@ class AnimalAdmin(admin.ModelAdmin):
 class PersonAdmin(admin.ModelAdmin):
     fieldsets = (
         ('General', {
-            'fields': ('first_name', 'last_name', 'person_type')
+            'fields': ('organization', 'first_name', 'last_name', 'person_type')
         }),
         ('Address', {
             'fields': ('address', 'address_two', 'city',
