@@ -22,6 +22,9 @@ class Animal(BaseModel):
     def __unicode__(self):
         return '%s - %s' % (self.name, self.sub_type)
 
+    class Meta:
+        ordering = ('name', )
+
 class PersonManager(models.Manager):
     ''' Manager for Person Class '''
 
