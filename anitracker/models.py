@@ -13,8 +13,8 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
-class Animal(BaseModel):
-    ''' Animal that was brought into center '''
+class AnimalType(BaseModel):
+    ''' Animal Type that was brought into center '''
 
     name = models.CharField(max_length=256)
     sub_type = models.CharField(max_length=256)
@@ -24,6 +24,28 @@ class Animal(BaseModel):
 
     class Meta:
         ordering = ('name', )
+
+class Animal(BaseModel):
+    ''' Animal that was brought in '''
+
+    MALE = 'M'
+    FEMALE = 'F'
+    GENDER_CHOICES = (
+        (MALE, 'Male'),
+        (FEMALE, 'Female'),
+    )
+
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    weight = models.CharField(max_length=128)
+    admission = models.ForeignKey('Admission')
+    animal_type = models.ForeignKey('AnimalType')
+
+    def __unicode__(self):
+        return '%s, %s, %s' % (
+            self.gender,
+            self.weight,
+            self.animal_type
+        )
 
 class PersonManager(models.Manager):
     ''' Manager for Person Class '''
@@ -117,7 +139,6 @@ class Admission(BaseModel):
         blank=True,
     )
     released_to = models.ForeignKey('Person', null=True, blank=True)
-    animal = models.ForeignKey('Animal')
     animal_age = models.CharField(max_length=64, choices=ANIMAL_AGE_CHOICES)
     disposition = models.CharField(max_length=64,
         choices=DISPOSITION_CHOICES)

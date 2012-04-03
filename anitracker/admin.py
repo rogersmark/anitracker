@@ -5,9 +5,15 @@ from django.core.exceptions import ValidationError
 from anitracker import models, utils
 
 
-class AnimalAdmin(admin.ModelAdmin):
+class AnimalTypeAdmin(admin.ModelAdmin):
     list_display = ('name', 'sub_type')
     search_fields = ('name', 'sub_type')
+
+class AnimalInline(admin.TabularInline):
+    model = models.Animal
+
+class AnimalAdmin(admin.ModelAdmin):
+    list_filter = ('gender', 'animal_type__name', 'animal_type__sub_type')
 
 class PersonAdmin(admin.ModelAdmin):
     fieldsets = (
@@ -51,13 +57,14 @@ class AdmissionAdminForm(forms.ModelForm):
 
 class AdmissionAdmin(admin.ModelAdmin):
     form = AdmissionAdminForm
+    inlines = [AnimalInline, ]
     actions = (utils.export_to_csv, utils.export_to_xlsx)
     fieldsets = (
         (None, {
             'fields': ('date_of_admission', 'received_from')
         }),
         ('Animal Information', {
-            'fields': ('animal', 'animal_age', 'disposition',
+            'fields': ('animal_age', 'disposition',
                 'disposition_date', 'released_to')
         }),
         ('Misc.', {
@@ -69,9 +76,8 @@ class AdmissionAdmin(admin.ModelAdmin):
         'disposition',
         'follow_up',
         'animal_age',
-        'animal__name'
     )
-    list_display = ('date_of_admission', 'animal', 'disposition', 'follow_up')
+    list_display = ('date_of_admission', 'disposition', 'follow_up')
     search_fields = (
         'received_from__last_name',
         'received_from__city',
@@ -81,7 +87,6 @@ class AdmissionAdmin(admin.ModelAdmin):
         'released_to__city',
         'released_to__county',
         'released_to__zipcode',
-        'animal__name',
     )
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
@@ -94,6 +99,7 @@ class AdmissionAdmin(admin.ModelAdmin):
         return super(AdmissionAdmin, self).formfield_for_foreignkey(
                 db_field, request, **kwargs)
 
-admin.site.register(models.Animal, AnimalAdmin)
+admin.site.register(models.AnimalType, AnimalTypeAdmin)
 admin.site.register(models.Person, PersonAdmin)
 admin.site.register(models.Admission, AdmissionAdmin)
+admin.site.register(models.Animal, AnimalAdmin)
